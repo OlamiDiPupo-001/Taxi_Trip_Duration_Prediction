@@ -46,7 +46,7 @@ A strict dataset split was used:
 ---
 
 ### 4.3 Model Demonstration
-<img src="Images/model_perfomancess.png"> 
+<img src="Images/model_perfomances.png"> 
 
 **5 Good and worst predictions**
 
