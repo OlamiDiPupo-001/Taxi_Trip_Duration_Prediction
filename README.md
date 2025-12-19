@@ -1,73 +1,89 @@
 # 🚕 AI-Driven Taxi Trip Duration Prediction
+We use driver instinct and custom **Holiday Feature**.
 
-**Course:** Introduction to Artificial Intelligence
+Traffic patterns change dramatically on holidays. By integrating a **US Federal Holiday calendar**, the model learns that:
+- A Monday ≠ a regular Monday if it’s **Labor Day**
 
-**Topic:** Regression Analysis for Urban Mobility  
-
-**Developer:** Azeez Oladipupo Akinlade -> 151486, Haithem Ladj -> 156006
-
----
-
-## 01 — Introduction: The Driver’s Perspective
-
-### 🎯 The Goal
-The objective of this project is to build a high-precision **regression model** that predicts the total travel time of a taxi trip in **New York City**.  
-By analyzing **GPS coordinates, timestamps, and passenger data**, the system estimates how many seconds a trip will last **before the vehicle even starts moving**.
+This significantly improves prediction accuracy.
 
 ---
 
-### 💡 Personal Motivation
-This project goes beyond academics. Alongside studies, Azeez also work as a **part-time taxi driver in Poznań**. Whether navigating rush-hour traffic near **Most Teatralny** or driving toward **Stary Rynek**, one metric matters most: **ETA (Estimated Time of Arrival)**.
-
-In the taxi industry, **time is money**. Accurate duration prediction helps:
-
-- **Drivers:**  
-  Better shift planning and smarter decisions about accepting long or short trips.
-- **Passengers:**  
-  Reduced uncertainty and stress during congested traffic.
-- **Platforms:**  
-  Smarter dispatching—assigning the closest driver in *time*, not just distance.
-
----
-## 📂 **Repository Structure**
-
-
-```
-Taxi_Trip_Duration_Prediction/
-│
-├── run_demo/                              # Demo applications
-│   ├── run_demo.py                        # python file to run demo
-│   └── run_demo.ipynb                     # notebook file
-│
-├── src/                                   # Project Files
-│   ├── ai_taxi_duration_prediction.ipynb  # EDA, Feature Engineering, Model Training & Tuning (notebook)
-│   └── ai_taxi_duration_prediction.py     # python file
-│
-├── taxi_duration_model_test/              # Model and testing 
-│   ├── taxi_duration_model.pkl/           # Trained model file
-│   └── taxi_test_data.zip/                # Test data file
-│
-├── Images/                                # Images from model training and validation 
-│
-└── README.md                              # Project documentation
-```
-
-
-## 📊 Input Data
-The project uses the **NYC Taxi Trip Duration dataset** (NYC TLC).
-
-**Features include:**
-- Pickup & drop-off GPS coordinates  
-- Exact pickup date and time  
-- Passenger count and vendor ID  
+### 3.3 Feature Engineering Pipeline
+- **Haversine Distance:**  
+  Converts GPS coordinates into straight-line distance (km)
+- **Time Decomposition:**  
+  - Hour of day  
+  - Day of week  
+  - `Is_Holiday` flag
+- **Data Cleaning:**  
+  Removed impossible trips (e.g., 1 second or 24 hours)
+- **Log Transformation:**  
+  Applied `log(1 + trip_duration)` to reduce skew from extreme outliers
 
 ---
 
-## 🤖 AI Domain & Task Type
-- **Domain:** Artificial Intelligence → Machine Learning  
-- **Learning Type:** Supervised Learning  
-- **Task:** Regression  
-- **Target Variable:** `trip_duration` (in seconds)
+## 04 — Proof of Concept & Experiments
+
+### 4.1 Testing Strategy
+A strict dataset split was used:
+
+- **60% Training** – Model learning  
+- **20% Validation** – Hyperparameter tuning  
+- **20% Test** – Final evaluation (never seen before by the model)
 
 ---
+
+### 4.2 Results
+- **Metric:** Root Mean Squared Error (RMSE)  
+- **Final Test RMSE:** `0.0138 on log scale` and on average prediction is off by 51.91 seconds
+
+**Key Insights**
+- Distance, hour and weekend are the most important feature
+- The holiday feature reduces late-year prediction errors
+<img src="Images/important_features.png"> 
+
+
+---
+
+### 4.3 Model Demonstration
+<img src="Images/model_perfomancess.png"> 
+
+**5 Good and worst predictions**
+
+
+<img src="Images/model_demonstration.png">
+
+---
+### 4.4 Data source and training
+To replicate this project, download the raw data from Kaggle
+- Go to the [NYC Taxi Trip Duration Competition](https://www.kaggle.com/competitions/nyc-taxi-trip-duration).
+- Download train.csv.
+- Place it in the same folder as the notebook.
+- The script will automatically perform a 60/20/20 split (Train/Validate/Test) to ensure the model isn't just memorizing data.
+
+
+
+
+---
+
+## 05 — Discussion & Challenges
+
+### 🚧 Real-World Limitations
+Even with **85%+ accuracy**, real driving experience reveals limitations, Driving in Poznań taught me that. One broken-down bus on a bridge can destroy an AI's prediction. The model is strong, but without real-time weather data and live road closure feeds, there will always be a 5-10% error rate caused by "unseen chaos.":
+
+- **Accidents:** Sudden crashes cannot be predicted
+- **Weather:** Rain can slow a city by ~20% (not yet modeled)
+- **Human Behavior:** Passenger delays introduce noise into the data
+
+**Future Improvement:**  
+Integrate a weather API to enhance realism.
+
+---
+
+## ▶️ How to Run the Demo
+1. Load `taxi_duration_model.pkl`(brain) and `taxi_test_data.csv`(test cases)
+2. Open the notebook
+3. Run the demo cell in the notebook
+4. Input a trip index to compare:
+   > *AI prediction vs. real NYC taxi outcome*
 
