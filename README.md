@@ -83,7 +83,7 @@ Integrate a weather API to enhance realism.
 ## ▶️ How to Run the Demo
 1. Load `taxi_duration_model.pkl`(brain) and `taxi_test_data.csv`(test cases)
 2. Open the notebook
-3. Run the demo cell in the notebook
+3. Run the run_demo cell in the notebook
 4. Input a trip index to compare:
    > *AI prediction vs. real NYC taxi outcome*
 
