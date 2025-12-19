@@ -87,3 +87,6 @@ Integrate a weather API to enhance realism.
 4. Input a trip index to compare:
    > *AI prediction vs. real NYC taxi outcome*
 
+---
+### Final Summary
+This project proves that with the right "hand-crafted" features (like holiday logic and Haversine math), a lightweight model can provide high-value predictions that are useful for real-world taxi operations.
